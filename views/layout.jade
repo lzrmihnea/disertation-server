@@ -2,6 +2,14 @@ doctype html
 html
   head
     title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body
+body
+    header
+    h1=title
+    section.upperMenu
+        ul
+          span
+            a(href='/setupSimParams') Simulate
+            | &#09 &#149 &#09
+            a(href='/analyze') Analyze
+    section.content
     block content
