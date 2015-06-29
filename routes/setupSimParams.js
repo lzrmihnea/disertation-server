@@ -109,7 +109,9 @@ module.exports = function (app) {
             upperArmMass: upperArmMass,
             forearmMass: forearmMass,
             handMass: handMass,
-            subjectMass: subjectMass
+            subjectMass: subjectMass,
+
+            _id:cnp+shoulderPos+elbowContactPos+handContactPos+elbowReleasePos+handReleasePos+upperArmMass+forearmMass+handMass+subjectMass
         };
         return currentSimulation;
     }

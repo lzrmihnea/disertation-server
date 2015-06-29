@@ -3,7 +3,9 @@ var mongoose = require('mongoose');
 // Optional: var schema = new mongoose.Schema({
 var schema = mongoose.Schema({
 
-    patient_id:{type:Number},
+    _id:{type:String},
+
+    patient_id:{type:Number, index:1,unique:true},
 
     shoulderPos: {type: String},
 
