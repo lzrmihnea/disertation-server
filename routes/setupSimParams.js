@@ -3,8 +3,10 @@
  */
 
 var Simulation = require('./../models/simulation.js');
+var Patient = require('./../models/patient.js');
 var mongoose = require('mongoose');
 mongoose.model('Simulation');
+mongoose.model('Patient');
 
 
 module.exports = function (app) {
@@ -15,21 +17,87 @@ module.exports = function (app) {
 
     app.post("/setupSimParams", function (req, res, next) {
 
-        var shoulderPos = req.body.shoulderPos.split(',');
+        var cnp = req.body.cnp;
+        var lastname = req.body.lastname;
+        var firstname = req.body.firstname;
+        var address = req.body.address;
 
-        var elbowContactPos = req.body.elbowContactPos.split(',');
-        var handContactPos = req.body.handContactPos.split(',');
+        var shoulderPos = req.body.shoulderPos;
 
-        var elbowReleasePos = req.body.elbowReleasePos.split(',');
-        var handReleasePos = req.body.handReleasePos.split(',');
+        var elbowContactPos = req.body.elbowContactPos;
+        var handContactPos = req.body.handContactPos;
 
-        var upperArmMass = req.body.upperArmMass.split(',');
-        var forearmMass = req.body.forearmMass.split(',');
-        var handMass = req.body.handMass.split(',');
-        var subjectMass = req.body.subjectMass.split(',');
+        var elbowReleasePos = req.body.elbowReleasePos;
+        var handReleasePos = req.body.handReleasePos;
 
-        console.log(shoulderPos);
+        var upperArmMass = req.body.upperArmMass;
+        var forearmMass = req.body.forearmMass;
+        var handMass = req.body.handMass;
+        var subjectMass = req.body.subjectMass;
+
+
+        var currentSimulation = createSimulationObject(cnp, shoulderPos, elbowContactPos, handContactPos, elbowReleasePos, handReleasePos, upperArmMass, forearmMass, handMass, subjectMass);
+
+        var patient = createPatientObject(cnp, lastname, firstname, address);
+
+
+        //Simulation.create(currentSimulation, function (err) {
+        //    if (err) {
+        //        return next(err);
+        //    }
+        //
+        //    console.log('Added new simulation!');
+        //})
+        var simId = currentSimulation.shoulderPos + currentSimulation.elbowContactPos +
+            currentSimulation.handContactPos + currentSimulation.elbowReleasePos +
+            currentSimulation.handReleasePos + currentSimulation.upperArmMass +
+            currentSimulation.forearmMass + currentSimulation.handMass +
+            currentSimulation.subjectMass;
+        Patient.findById(patient, function (err, foundPatient) {
+            if (err) {
+                return next(err);
+            }
+
+            if (foundPatient) {
+
+                Simulation.findById(simId, function (err, foundSim) {
+                    if (err) {
+                        return next(err);
+                    }
+                    if (!foundSim) {
+                        currentSimulation._id = simId;
+                        Simulation.create(currentSimulation, function (err, createdSimulation) {
+                            if (err) {
+                                return next(err);
+                            }
+                        })
+                    }
+                });
+            } else {
+                Patient.create(patient, function (err, newPatient) {
+                    if (err) {
+                        return next(err);
+                    }
+                    Simulation.create(currentSimulation, function (err, createdSimulation) {
+                        if (err) {
+                            return next(err);
+                        }
+                    });
+                })
+            }
+            simId += currentSimulation.patient_id;
+            patient.simulations.push(currentSimulation);
+        console.log(patient._id);
+        });
+
+        return res.redirect('/setupSimParams');
+    });
+
+
+    function createSimulationObject(cnp, shoulderPos, elbowContactPos, handContactPos, elbowReleasePos, handReleasePos, upperArmMass, forearmMass, handMass, subjectMass) {
         var currentSimulation = {
+            patient_id: cnp,
+
             shoulderPos: shoulderPos,
 
             elbowContactPos: elbowContactPos,
@@ -43,16 +111,16 @@ module.exports = function (app) {
             handMass: handMass,
             subjectMass: subjectMass
         };
+        return currentSimulation;
+    }
 
-        Simulation.create(currentSimulation, function (err, newUser) {
-            if (err) {
-                return next(err);
-            }
-
-            console.log('Added new simulation!');
-        })
-
-        return res.redirect('/setupSimParams');
-    });
-
+    function createPatientObject(cnp, lastname, firstname, address) {
+        var patient = {
+            _id: cnp,
+            name:{first:firstname, last:lastname},
+            address: address,
+            simulations: []
+        };
+        return patient;
+    }
 };

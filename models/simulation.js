@@ -3,6 +3,8 @@ var mongoose = require('mongoose');
 // Optional: var schema = new mongoose.Schema({
 var schema = mongoose.Schema({
 
+    patient_id:{type:Number},
+
     shoulderPos: {type: String},
 
     elbowContactPos: {type: String},
@@ -13,10 +15,9 @@ var schema = mongoose.Schema({
 
     upperArmMass: {type: String},
     forearmMass: {type: String},
-    handMass: {type: String},   
-    subjectMass: {type: String},
+    handMass: {type: String},
+    subjectMass: {type: String}
 
-    created: {type: Date, default: Date.now}
 });
 
 module.exports = mongoose.model('Simulation', schema);
