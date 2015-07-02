@@ -70,8 +70,11 @@ module.exports = function (app) {
                             if (err) {
                                 return next(err);
                             }
-                        })
+                        });
                     }
+                    foundPatient.simulations.push(currentSimulation._id);
+                    foundPatient.save();
+                    console.log('saved!');
                 });
             } else {
                 Patient.create(patient, function (err, newPatient) {
@@ -82,11 +85,14 @@ module.exports = function (app) {
                         if (err) {
                             return next(err);
                         }
+                        newPatient.simulations.push(currentSimulation._id);
+                        newPatient.save();
+                        console.log('saved!');
                     });
                 })
             }
-            simId += currentSimulation.patient_id;
-            patient.simulations.push(currentSimulation);
+            //simId += currentSimulation.patient_id;
+            //patient.simulations.push(currentSimulation._id);
         console.log(patient._id);
         });
 
@@ -120,8 +126,7 @@ module.exports = function (app) {
         var patient = {
             _id: cnp,
             name:{first:firstname, last:lastname},
-            address: address,
-            simulations: []
+            address: address
         };
         return patient;
     }
