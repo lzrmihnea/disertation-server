@@ -21,32 +21,35 @@ module.exports = function (app) {
         })
     });
 
-    //// Create
-    //app.get("/addPatient", function (req, res) {
-    //    res.render('patients.jade');
-    //});
-    //
     app.post("/addPatient", function (req, res, next) {
 
         var cnp = req.body.cnp;
         var lastname = req.body.lastname;
         var firstname = req.body.firstname;
         var address = req.body.address;
-        console.log('cnp: ' + cnp);
-        console.log('lastname: ' + lastname);
-        console.log('firstname: ' + firstname);
-        console.log('address: ' + address);
         Pacient.create({
             _id: cnp,
-            lastname: lastname,
-            firstname: firstname,
+            name:{
+                last:lastname,
+                first:firstname
+            },
             address: address
         }, function (err, pacient) {
             if (err) return next(err);
-            res.redirect('/patients');
         });
 
         return res.redirect('/patients');
+    });
+
+    app.get("/patient/:id", function(req, res,next){
+        var cnp=req.params.id;
+        Patient.findById(cnp).exec(function(err,patient) {
+            if(err) return next(err);
+
+            if(!patient) return next(); //404
+
+            res.render('patient.jade', {patient:patient});
+        });
     })
     //
     //

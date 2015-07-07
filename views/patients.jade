@@ -5,33 +5,37 @@ extends layout
 block content
 
     if (pacients)
-        ul.pacients
-        each pacient in pacients
-            li
-                p
-                span
-                    a(href='/pacient/#{pacient._id}') #{pacient._id}
-                span &#09 | &#09
-                span #{pacient.lastname}
-                span &#09 | &#09
-                span #{pacient.firstname}
-                span &#09 | &#09
-                span
-                    a(href='/pacient/sim/') Add simulation
-                span  &#09 | &#09
-                span
-                    a(href='/pacient/remove/#{pacient._id}') Remove
+        table
+            thead
+                tr
+                    td(style='width: 150px')
+                        b CNP
+                    td(style='width: 150px')
+                        b Lastname
+                    td(style='width: 150px')
+                        b Firstname
+            tbody
+                each pacient in pacients
+                    tr
+                        td(style='width: 150px')
+                           a(href='/patient/#{pacient._id}') #{pacient._id}
+                        td(style='width: 150px')
+                            | #{pacient.name.last}
+                        td(style='width: 150px')
+                            | #{pacient.name.first}
+                    p
+                    //td
+                    //    a(href='/pacient/sim/') Add simulation
+                    //td
+                    //    a(href='/pacient/remove/#{pacient._id}') Remove
 
     form(method='post', action='/addPatient', enctype='application/x-www-form-urlencoded')
-        li
             p
             span
-                input(name='cnp', placeholder='CNP')
+                input(name='cnp', placeholder='CNP', style='width:150px')
             span
-                input(name='lastname', placeholder='Last name')
+                input(name='lastname', placeholder='Last name', style='width:150px')
             span
-                input(name='firstname', placeholder='First name')
+                input(name='firstname', placeholder='First name', style='width:150px')
             span
                 input(type='submit', value='Add pacient')
-        li
-            textarea(name='address', placeholder='Address', rows='5', cols='50')

@@ -1,0 +1,9 @@
+//
+   Created by Mihnea on 7/4/2015.
+
+extends layout
+block content
+
+    if (patient)
+        h1
+            | #{patient.name.last}, #{patient.name.first}
