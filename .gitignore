@@ -44,3 +44,4 @@ Temporary Items
 
 # Modules of the JS app
 node_modules/
+node_modules/express
