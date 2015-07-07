@@ -48,11 +48,11 @@ module.exports = function (app) {
         //
         //    console.log('Added new simulation!');
         //})
-        var simId = currentSimulation.shoulderPos + currentSimulation.elbowContactPos +
-            currentSimulation.handContactPos + currentSimulation.elbowReleasePos +
-            currentSimulation.handReleasePos + currentSimulation.upperArmMass +
-            currentSimulation.forearmMass + currentSimulation.handMass +
-            currentSimulation.subjectMass;
+        //var simId = currentSimulation.shoulderPos + currentSimulation.elbowContactPos +
+        //    currentSimulation.handContactPos + currentSimulation.elbowReleasePos +
+        //    currentSimulation.handReleasePos + currentSimulation.upperArmMass +
+        //    currentSimulation.forearmMass + currentSimulation.handMass +
+        //    currentSimulation.subjectMass;
         Patient.findById(patient, function (err, foundPatient) {
             if (err) {
                 return next(err);
@@ -60,12 +60,12 @@ module.exports = function (app) {
 
             if (foundPatient) {
 
-                Simulation.findById(simId, function (err, foundSim) {
+                Simulation.findById(currentSimulation._id, function (err, foundSim) {
                     if (err) {
                         return next(err);
                     }
                     if (!foundSim) {
-                        currentSimulation._id = simId;
+                        //currentSimulation._id = simId;
                         Simulation.create(currentSimulation, function (err, createdSimulation) {
                             if (err) {
                                 return next(err);
@@ -73,6 +73,7 @@ module.exports = function (app) {
                         });
                     }
                     foundPatient.simulations.push(currentSimulation._id);
+                    //foundPatient.simulations.push(currentSimulation);
                     foundPatient.save();
                     console.log('saved!');
                 });
@@ -86,6 +87,7 @@ module.exports = function (app) {
                             return next(err);
                         }
                         newPatient.simulations.push(currentSimulation._id);
+                        //newPatient.simulations.push(currentSimulation);
                         newPatient.save();
                         console.log('saved!');
                     });

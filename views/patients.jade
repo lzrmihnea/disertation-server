@@ -1,0 +1,37 @@
+//
+   Created by Mihnea on 7/4/2015.
+
+extends layout
+block content
+
+    if (pacients)
+        ul.pacients
+        each pacient in pacients
+            li
+                p
+                span
+                    a(href='/pacient/#{pacient._id}') #{pacient._id}
+                span &#09 | &#09
+                span #{pacient.lastname}
+                span &#09 | &#09
+                span #{pacient.firstname}
+                span &#09 | &#09
+                span
+                    a(href='/pacient/sim/') Add simulation
+                span  &#09 | &#09
+                span
+                    a(href='/pacient/remove/#{pacient._id}') Remove
+
+    form(method='post', action='/addPatient', enctype='application/x-www-form-urlencoded')
+        li
+            p
+            span
+                input(name='cnp', placeholder='CNP')
+            span
+                input(name='lastname', placeholder='Last name')
+            span
+                input(name='firstname', placeholder='First name')
+            span
+                input(type='submit', value='Add pacient')
+        li
+            textarea(name='address', placeholder='Address', rows='5', cols='50')
