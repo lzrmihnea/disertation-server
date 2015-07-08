@@ -18,8 +18,9 @@ var schema = mongoose.Schema({
     upperArmMass: {type: String},
     forearmMass: {type: String},
     handMass: {type: String},
-    subjectMass: {type: String}
+    subjectMass: {type: String},
 
+    created: {type:Date, default:Date.now}
 });
 
 module.exports = mongoose.model('Simulation', schema);

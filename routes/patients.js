@@ -9,13 +9,13 @@ var Simulation = require('./../models/simulation.js');
 var Patient = require('./../models/patient.js');
 var mongoose = require('mongoose');
 mongoose.model('Simulation');
-var Pacient = mongoose.model('Patient');
+var Patient = mongoose.model('Patient');
 
 
 module.exports = function (app) {
 
     app.get("/patients", function (req, res, next) {
-        Pacient.find().sort('lastname').exec(function (err, pacients) {
+        Patient.find().sort('lastname').exec(function (err, pacients) {
             if (err) return next(err);
             res.render('patients.jade', {pacients: pacients});
         })
@@ -27,7 +27,7 @@ module.exports = function (app) {
         var lastname = req.body.lastname;
         var firstname = req.body.firstname;
         var address = req.body.address;
-        Pacient.create({
+        Patient.create({
             _id: cnp,
             name:{
                 last:lastname,
