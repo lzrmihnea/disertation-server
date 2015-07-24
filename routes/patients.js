@@ -5,17 +5,17 @@
  * Created by Mihnea on 6/14/2015.
  */
 
-var Simulation = require('./../models/simulation.js');
-var Patient = require('./../models/patient.js');
+var SimulationModel = require('./../models/simulation.js');
+var PatientModel = require('./../models/patient.js');
 var mongoose = require('mongoose');
 mongoose.model('Simulation');
-var Patient = mongoose.model('Patient');
+var PatientSchema = mongoose.model('Patient');
 
 
 module.exports = function (app) {
 
     app.get("/patients", function (req, res, next) {
-        Patient.find().sort('lastname').exec(function (err, pacients) {
+        PatientSchema.find().sort('lastname').exec(function (err, pacients) {
             if (err) return next(err);
             res.render('patients.jade', {pacients: pacients});
         })
@@ -27,7 +27,7 @@ module.exports = function (app) {
         var lastname = req.body.lastname;
         var firstname = req.body.firstname;
         var address = req.body.address;
-        Patient.create({
+        PatientSchema.create({
             _id: cnp,
             name:{
                 last:lastname,
@@ -43,7 +43,7 @@ module.exports = function (app) {
 
     app.get("/patient/:id", function(req, res,next){
         var cnp=req.params.id;
-        Patient.findById(cnp).exec(function(err,patient) {
+        PatientSchema.findById(cnp).exec(function(err,patient) {
             if(err) return next(err);
 
             if(!patient) return next(); //404

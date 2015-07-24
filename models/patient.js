@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
-mongoose.model('Simulation');
-var Simulation = require('./simulation.js');
+var Simulation = mongoose.model('Simulation');
 
 var schema = mongoose.Schema({
     _id: {
@@ -10,7 +9,9 @@ var schema = mongoose.Schema({
     address: {type:String},
     created: {type:Date, default:Date.now},
     //simulations: [{type:Simulation}]
-    //simulations: [{type: mongoose.Schema.Types.ObjectId, ref: 'Simulation'}]
-    simulations: [{type: String}]
+    //simulations: [{sim :{type: mongoose.Schema.Types.ObjectId, ref: 'Simulation._id'}}]
+    simulations: [{id: String, created:String}]
 });
+
+
 module.exports = mongoose.model('Patient', schema);

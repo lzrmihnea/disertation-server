@@ -1,0 +1,40 @@
+//
+   Created by Mihnea on 7/9/2015.
+extends layout
+
+block content
+   if (patient)
+      h1
+         a(href='/patient/#{patient._id}') #{patient.name.last}, #{patient.name.first}
+      p
+         | CNP: #{patient._id}
+      br
+      br
+      if(sim)
+         p
+            b Simulation #{sim.created}
+         table
+            tbody
+               tr
+                  td
+                     | Shoulder: #{sim.shoulderPos}
+               tr
+                  td
+                     | Elbow @contact: #{sim.elbowContactPos}
+                  td
+                     | Elbow @release: #{sim.elbowReleasePos}
+               tr
+                  td
+                     | Hand @ contact: #{sim.handContactPos}
+                  td
+                     | Hand @release: #{sim.handReleasePos}
+         p
+            | Upper arm mass: #{sim.upperArmMass}
+         p
+            | Forearm mass: #{sim.forearmMass}
+         p
+            | Hand mass: #{sim.handMass}
+         p
+            | Subject overall mass: #{sim.subjectMass}
+
+
