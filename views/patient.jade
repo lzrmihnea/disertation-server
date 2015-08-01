@@ -24,9 +24,12 @@ block content
                         if (patient.simulations)
                             each simulation in patient.simulations
                                 p
-                                    a(href='/patient/#{patient._id}/sim/#{simulation._id}') #{simulation.created}
+                                    span
+                                        a(href='/patient/#{patient._id}/sim/#{simulation._id}') #{simulation.created}
+                                        | &#09 &#149 &#09
+                                        a(href='/patient/#{patient._id}/sim/#{simulation._id}/delete') X
                     td(style='vertical-align:top')
-                        form(method='post', action='/simulate', enctype='application/x-www-form-urlencoded')
+                        form(method='post', action='/patient/#{patient._id}', enctype='application/x-www-form-urlencoded')
                             p
                                 input#shoulderPos(name='shoulderPos', placeholder='Shoulder position [x,y]', autocomplete=off)
                             p
@@ -54,3 +57,7 @@ block content
                             p
                                 input(type='submit', value='Submit data')
                                 input(type='hidden', name='patient_id', value='#{patient._id}')
+                            if (error)
+                                | #{error}
+                                for(singleError in error.errors)
+                                    | #{singleError}

@@ -5,11 +5,10 @@
  * Created by Mihnea on 6/14/2015.
  */
 
-var SimulationModel = require('./../models/simulation.js');
-var PatientModel = require('./../models/patient.js');
 var mongoose = require('mongoose');
-mongoose.model('Simulation');
+var SimulationSchema = mongoose.model('Simulation');
 var PatientSchema = mongoose.model('Patient');
+var dateformat = require('dateformat');
 
 
 module.exports = function (app) {
@@ -17,7 +16,7 @@ module.exports = function (app) {
     app.get("/patients", function (req, res, next) {
         PatientSchema.find().sort('lastname').exec(function (err, pacients) {
             if (err) return next(err);
-            res.render('patients.jade', {pacients: pacients});
+            return res.render('patients.jade', {patients: pacients});
         })
     });
 
@@ -34,23 +33,53 @@ module.exports = function (app) {
                 first:firstname
             },
             address: address
-        }, function (err, pacient) {
+        }, function (err, patient) {
             if (err) return next(err);
         });
 
         return res.redirect('/patients');
     });
 
-    app.get("/patient/:id", function(req, res,next){
+    app.get("/patient/:id", function(req,res,next){
         var cnp=req.params.id;
         PatientSchema.findById(cnp).exec(function(err,patient) {
             if(err) return next(err);
 
             if(!patient) return next(); //404
 
-            res.render('patient.jade', {patient:patient});
+            return res.render('patient.jade', {patient:patient});
         });
-    })
+    });
+
+    app.post("/patient/:id", function (req, res, next) {
+
+        var patient_id = req.body.patient_id;
+        var currentSimulation = SimulationSchema.createSimFromReq(req);
+
+        SimulationSchema.create(currentSimulation, function (error, createdSim) {
+            //Validation error handling here
+            if (error) {
+                PatientSchema.findById(patient_id).exec(function(err,patient) {
+                    if(err) return next(err);
+                    if(!patient) return next(); //404
+                    return res.render('patient.jade', {patient:patient, error:error});
+                });
+            }
+            else console.log('ispravit-o');
+            if(createdSim) {
+                var simID = createdSim._id.toString();
+                var simCreationDate = dateformat(createdSim.created, "dd.mm.yyyy, hh:MM:ss");
+
+                console.log(simID);
+                PatientSchema.update(patient_id,{$push:{simulations:{_id:simID, created:simCreationDate}}}, function(err,result){
+                    if(err) return next(err);
+                });
+                return res.redirect("/patient/"+patient_id);
+            };
+        });
+
+    });
+
     //
     //
     //app.post("/patients", function (req, res, next) {

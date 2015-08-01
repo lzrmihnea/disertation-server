@@ -4,7 +4,7 @@
 extends layout
 block content
 
-    if (pacients)
+    if (patients)
         table
             thead
                 tr
@@ -15,19 +15,17 @@ block content
                     td(style='width: 150px')
                         b Firstname
             tbody
-                each pacient in pacients
+                each patient in patients
                     tr
                         td(style='width: 150px')
-                           a(href='/patient/#{pacient._id}') #{pacient._id}
+                           a(href='/patient/#{patient._id}') #{patient._id}
                         td(style='width: 150px')
-                            | #{pacient.name.last}
+                            | #{patient.name.last}
                         td(style='width: 150px')
-                            | #{pacient.name.first}
+                            | #{patient.name.first}
                     p
                     //td
-                    //    a(href='/pacient/sim/') Add simulation
-                    //td
-                    //    a(href='/pacient/remove/#{pacient._id}') Remove
+                    //    a(href='/patient/remove/#{pacient._id}') Remove
 
     form(method='post', action='/addPatient', enctype='application/x-www-form-urlencoded')
             p
@@ -38,4 +36,4 @@ block content
             span
                 input(name='firstname', placeholder='First name', style='width:150px')
             span
-                input(type='submit', value='Add pacient')
+                input(type='submit', value='Add patient')

@@ -5,9 +5,9 @@ var schema = mongoose.Schema({
 
     patient_id: {type: Number, index: 1},
 
-    shoulderPos: {type: String},
+    shoulderPos: {type: String, required: true, match:/^(\-?\d+(\.\d+)?),\w*(\-?\d+(\.\d+)?)$/},
 
-    elbowContactPos: {type: String},
+    elbowContactPos: {type: String, required: true, match:/^(\-?\d+(\.\d+)?),\w*(\-?\d+(\.\d+)?)$/},
     handContactPos: {type: String},
 
     elbowReleasePos: {type: String},
