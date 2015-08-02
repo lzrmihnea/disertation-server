@@ -2,7 +2,9 @@
  * Created by Mihnea on 7/8/2015.
  */
 var mongoose = require('mongoose');
-//var SimulationModel = mongoose.model('Simulation');
+var fs = require('fs');
+var dateformat = require('dateformat');
+
 var Patient = mongoose.model('Patient');
 var Simulation = mongoose.model('Simulation');
 
@@ -27,6 +29,90 @@ module.exports = function (app) {
             });
         });
     });
+
+    app.post("/patient/:id/sim/:simID",function(req,res,next){
+        console.log('aici o fost');
+
+        var patientID = req.params.id;
+        var simID = mongoose.Types.ObjectId(req.params.simID);
+
+        Simulation.findById(simID).exec(function(err,foundSimulation) {
+            if(err) return next(err);
+            if(!foundSimulation) {
+                console.log('no sim found')
+            } //404
+
+            var simJSON = parseSimToJSON(foundSimulation);
+            console.log(simJSON);
+            var jsonFilename = "/" + foundSimulation.patient_id + " - " + dateformat(foundSimulation.created, "dd.mm.yyyy, hh-MM-ss")+".txt";
+            fs.writeFile(jsonFilename, JSON.stringify(simJSON), function(err) {
+                if(err) return next(err);
+
+                console.log("The file was saved!");
+            });
+        });
+    });
+
+    function parseSimToJSON(simulation) {
+        var simJSON = {
+            patient_id: simulation.patient_id,
+
+        // Coordinates
+        shoulder_x_coord: simulation.shoulderPos.split(',')[0],
+        shoulder_y_coord: simulation.shoulderPos.split(',')[1],
+        //shoulder_coord: [ shoulder_x_coord, shoulder_y_coord, 0 ],
+
+        elbow_c_x_coord: simulation.elbowContactPos.split(',')[0],
+        elbow_c_y_coord: simulation.elbowContactPos.split(',')[1],
+        //elbow_c_coord: [elbow_c_x_coord, elbow_c_y_coord, 0],
+
+        wrist_c_x_coord: simulation.handContactPos.split(',')[0],
+        wrist_c_y_coord: simulation.handContactPos.split(',')[1],
+        //wrist_c_coord: [ wrist_c_x_coord, wrist_c_y_coord, 0],
+
+        elbow_r_x_coord: simulation.elbowReleasePos.split(',')[0],
+        elbow_r_y_coord: simulation.elbowReleasePos.split(',')[1],
+        //elbow_r_coord: [ elbow_r_x_coord, elbow_r_y_coord, 0],
+
+        wrist_r_x_coord: simulation.handReleasePos.split(',')[0],
+        wrist_r_y_coord: simulation.handReleasePos.split(',')[1],
+        //wrist_r_coord: [ wrist_r_x_coord, wrist_r_y_coord, 0 ],
+
+
+    //// Lengths
+    //    upperArmLength: sqrt((shoulder_x_coord - elbow_c_x_coord)^2 + (shoulder_y_coord - elbow_c_y_coord)^2),
+    //    foreArmLength: sqrt((elbow_c_x_coord - wrist_c_x_coord)^2 + (elbow_c_y_coord - wrist_c_y_coord)^2),
+    ////% handLength: 0.1944 ;
+    //    lowerArmLength: foreArmLength,
+    //    handrimRadius: sqrt((wrist_c_x_coord - 0)^2 + (wrist_c_y_coord - 0)^2),
+
+        // Masses
+        //massFactor: 1,
+        upperArmMass: 1 * simulation.upperArmMass,
+        foreArmMass: simulation.forearmMass,
+        handMass: simulation.handMass,
+        //lowerArmMass: 1 * (foreArmMass + 0*handMass),
+        subjectMass: 1 * simulation.subjectMass,
+
+    // Centers of Gravity
+        upperArmCGratio: 0.4361,
+        foreArmCGratio: 0.43,
+        handCGratio: 0.5062,
+        lowerArmCGratio: 0.4681
+            //,
+
+        //upperArmCG_x: (elbow_c_x_coord) + ((shoulder_x_coord - elbow_c_x_coord) * upperArmCGratio),
+        //upperArmCG_y: elbow_c_y_coord + ((shoulder_y_coord - elbow_c_y_coord) * upperArmCGratio),
+        //lowerArmCG_x: (elbow_c_x_coord * lowerArmCGratio),
+        //lowerArmCG_y: (elbow_c_y_coord * lowerArmCGratio),
+        //
+        //upperArmCG_coord: elbow_c_coord + ( ( shoulder_coord - elbow_c_coord ) * upperArmCGratio ),
+        //lowerArmCG_coord: wrist_c_coord + ( ( elbow_c_coord - wrist_c_coord ) * lowerArmCGratio )
+
+
+    }
+        return simJSON;
+    }
 
     app.get("/patient/:id/sim/:simID/delete",function(req,res,next){
         var patientID = req.params.id;

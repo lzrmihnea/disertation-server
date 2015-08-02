@@ -36,5 +36,7 @@ block content
             | Hand mass: #{sim.handMass}
          p
             | Subject overall mass: #{sim.subjectMass}
+         form(method='post', action='/patient/#{patient._id}/sim/#{sim._id}', enctype='application/x-www-form-urlencoded')
+            input(type='submit', value='Export JSON')
 
 
