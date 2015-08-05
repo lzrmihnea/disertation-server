@@ -8,8 +8,6 @@ var schema = mongoose.Schema({
     name: {first:String, last:String},
     address: {type:String},
     created: {type:Date, default:Date.now},
-    //simulations: [{type:Simulation}]
-    //simulations: [{sim :{type: mongoose.Schema.Types.ObjectId, ref: 'Simulation._id'}}]
     simulations: [{id: String, created:String}]
 });
 
