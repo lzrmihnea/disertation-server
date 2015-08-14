@@ -1,0 +1,44 @@
+extends layout
+
+block content
+   form(method='post', action='/setupSimParams', enctype='application/x-www-form-urlencoded')
+      ul
+         p
+            input(name='cnp', placeholder='CNP')
+         p
+            span
+               input(name='lastname', placeholder='Last name')
+            span
+               | &#09
+            span
+               input(name='firstname', placeholder='First name')
+         p
+            textarea(name='address', placeholder='Address', rows='5', cols='50')
+         p
+            | &#09
+         p
+            input#shoulderPos(name='shoulderPos', placeholder='Shoulder position [x,y]', autocomplete=off)
+         p
+            span
+               input#elbowContactPos(name='elbowContactPos', placeholder='Elbow @ contact [x,y]', autocomplete=off)
+            span
+               | &#09
+            span
+               input#handContactPos(name='handContactPos', placeholder='Hand @ contact [x,y]', autocomplete=off)
+         p
+            span
+               input#elbowReleasePos(name='elbowReleasePos', placeholder='Elbow @ release [x,y]', autocomplete=off)
+            span
+               | &#09
+            span
+               input#handReleasePos(name='handReleasePos', placeholder='Hand @ release [x,y]', autocomplete=off)
+         p
+            input#upperArmMass(name='upperArmMass', placeholder='Mass of upper arm [kg]', autocomplete=off)
+         p
+            input#forearmMass(name='forearmMass', placeholder='Mass of forearm [kg]', autocomplete=off)
+         p
+            input#handMass(name='handMass', placeholder='Mass of hand [kg]', autocomplete=off)
+         p
+            input#subjectMass(name='subjectMass', placeholder='Mass of subject [kg]', autocomplete=off)
+         p
+            input(type='submit', value='Submit data')

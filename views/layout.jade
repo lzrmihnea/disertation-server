@@ -1,17 +1,17 @@
 doctype html
 html
   head
+    style
+        include ../css/style2.css
     title= title
-body
-    header
-    h1=title
+  body
+    #header
     section.upperMenu
         ul
           span
-            a(href='/') Home
+            a(href='/setupSimParams') Simulate
             | &#09 &#149 &#09
             a(href='/patients') Patients
-            | &#09 &#149 &#09
-            a(href='/about') About(TODO)
-    section.content
-    block content
+    #section
+        section.content
+        block content

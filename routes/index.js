@@ -1,4 +1,5 @@
 var errors = require('./errors');
+var setupSimInfo = require('./setupSimParams');
 var patients = require('./patients');
 var simulations = require('./simulations');
 var mongoose = require('mongoose');
@@ -12,6 +13,8 @@ module.exports = function (app) {
   app.get('/', function(req, res, next){
       res.render('home.jade');
   })
+
+  setupSimInfo(app);
 
   patients(app);
 
