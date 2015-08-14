@@ -80,5 +80,26 @@ module.exports = function (app) {
 
     });
 
+    //
+    //
+    //app.post("/patients", function (req, res, next) {
+    //
+    //    var cnp = req.body.cnp;
+    //    var lastname = req.body.lastname;
+    //    var firstname = req.body.firstname;
+    //    var address = req.body.address;
+    //    console.log('cnp: ' + cnp);
+    //    console.log('lastname: ' + lastname);
+    //    console.log('firstname: ' + firstname);
+    //    console.log('address: ' + address);
+    //
+    //    //var patient = createPatientObject(cnp, lastname, firstname, address);
+    //
+    //    //Patient.findById(patient, function (err, foundPatient) {
+    //    //});
+    //
+    //    return res.redirect('/patients');
+    //});
+
 
 };
