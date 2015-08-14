@@ -21,4 +21,12 @@ module.exports = function (app) {
     app.use(session({secret: 'disertation server', saveUninitialized: true, resave: true}));
 
 
+    //// Expose session to views
+    //app.use(function (req, res, next) {
+    //    if (req.user) {
+    //        req.locals.isLoggedIn = req.session.isLoggedIn;
+    //        req.locals.member = req.session.member;
+    //    }
+    //    next();
+    //})
 }
