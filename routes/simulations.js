@@ -25,7 +25,7 @@ module.exports = function (app) {
                     console.log('no sim found')
                 } //404
                 var simulation = foundSimulation;
-                res.render('simulation.jade', {patient:patient,sim:simulation});
+                return res.render('simulation.jade', {patient:patient,sim:simulation});
             });
         });
     });
@@ -44,12 +44,19 @@ module.exports = function (app) {
 
             var simJSON = parseSimToJSON(foundSimulation);
             console.log(simJSON);
-            var jsonFilename = "/" + foundSimulation.patient_id + " - " + dateformat(foundSimulation.created, "dd.mm.yyyy, hh-MM-ss")+".txt";
-            fs.writeFile(jsonFilename, JSON.stringify(simJSON), function(err) {
-                if(err) return next(err);
-
-                console.log("The file was saved!");
-            });
+            //var jsonFilename = "/" + foundSimulation.patient_id + " - " + dateformat(foundSimulation.created, "dd.mm.yyyy, hh-MM-ss")+".txt";
+            var fileExtension = ".m";
+            var jsonFilename = foundSimulation.patient_id + " - " + dateformat(foundSimulation.created, "dd.mm.yyyy, hh-MM-ss")+fileExtension;
+            //fs.writeFile(jsonFilename, JSON.stringify(simJSON), function(err) {
+            //    if(err) return next(err);
+            //
+            //    console.log("The file was saved!");
+            //});
+            console.log(jsonFilename);
+            var text={jsonFileContents:JSON.stringify(simJSON)};
+            console.log(text);
+            res.set({"Content-Disposition":"attachment; filename=\""+jsonFilename+"\""});
+            res.send(text.jsonFileContents);
         });
     });
 
@@ -58,24 +65,24 @@ module.exports = function (app) {
             patient_id: simulation.patient_id,
 
         // Coordinates
-        shoulder_x_coord: simulation.shoulderPos.split(',')[0],
-        shoulder_y_coord: simulation.shoulderPos.split(',')[1],
+        shoulder_x_coord: parseFloat(simulation.shoulderPos.split(',')[0]),
+        shoulder_y_coord: parseFloat(simulation.shoulderPos.split(',')[1]),
         //shoulder_coord: [ shoulder_x_coord, shoulder_y_coord, 0 ],
 
-        elbow_c_x_coord: simulation.elbowContactPos.split(',')[0],
-        elbow_c_y_coord: simulation.elbowContactPos.split(',')[1],
+        elbow_c_x_coord: parseFloat(simulation.elbowContactPos.split(',')[0]),
+        elbow_c_y_coord: parseFloat(simulation.elbowContactPos.split(',')[1]),
         //elbow_c_coord: [elbow_c_x_coord, elbow_c_y_coord, 0],
 
-        wrist_c_x_coord: simulation.handContactPos.split(',')[0],
-        wrist_c_y_coord: simulation.handContactPos.split(',')[1],
+        wrist_c_x_coord: parseFloat(simulation.handContactPos.split(',')[0]),
+        wrist_c_y_coord: parseFloat(simulation.handContactPos.split(',')[1]),
         //wrist_c_coord: [ wrist_c_x_coord, wrist_c_y_coord, 0],
 
-        elbow_r_x_coord: simulation.elbowReleasePos.split(',')[0],
-        elbow_r_y_coord: simulation.elbowReleasePos.split(',')[1],
+        elbow_r_x_coord: parseFloat(simulation.elbowReleasePos.split(',')[0]),
+        elbow_r_y_coord: parseFloat(simulation.elbowReleasePos.split(',')[1]),
         //elbow_r_coord: [ elbow_r_x_coord, elbow_r_y_coord, 0],
 
-        wrist_r_x_coord: simulation.handReleasePos.split(',')[0],
-        wrist_r_y_coord: simulation.handReleasePos.split(',')[1],
+        wrist_r_x_coord: parseFloat(simulation.handReleasePos.split(',')[0]),
+        wrist_r_y_coord: parseFloat(simulation.handReleasePos.split(',')[1]),
         //wrist_r_coord: [ wrist_r_x_coord, wrist_r_y_coord, 0 ],
 
 
@@ -89,8 +96,8 @@ module.exports = function (app) {
         // Masses
         //massFactor: 1,
         upperArmMass: 1 * simulation.upperArmMass,
-        foreArmMass: simulation.forearmMass,
-        handMass: simulation.handMass,
+        foreArmMass: parseFloat(simulation.forearmMass),
+        handMass: parseFloat(simulation.handMass),
         //lowerArmMass: 1 * (foreArmMass + 0*handMass),
         subjectMass: 1 * simulation.subjectMass,
 
