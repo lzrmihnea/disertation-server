@@ -20,14 +20,14 @@ block content
                         td(style='width: 150px')
                            a(href='/patient/#{patient._id}') #{patient._id}
                         td(style='width: 150px')
-                            | #{patient.name.last}
+                            | #{patient.lastname}
                         td(style='width: 150px')
-                            | #{patient.name.first}
+                            | #{patient.firstname}
+                        td
+                            a(href='/patient/remove/#{patient._id}') X
                     p
-                    //td
-                    //    a(href='/patient/remove/#{pacient._id}') Remove
 
-    form(method='post', action='/addPatient', enctype='application/x-www-form-urlencoded')
+    form(method='post', action='/patients', enctype='application/x-www-form-urlencoded')
             p
             span
                 input(name='cnp', placeholder='CNP', style='width:150px')
@@ -37,3 +37,8 @@ block content
                 input(name='firstname', placeholder='First name', style='width:150px')
             span
                 input(type='submit', value='Add patient')
+
+    #errorBox
+        p
+        if(errors)
+            | #{errors}

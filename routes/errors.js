@@ -7,9 +7,7 @@ module.exports = function(app) {
         res.status(404);
 
         if(req.accepts('html')) {
-            //return res.status(200).send("<h2> I'm sorry, I couldn't find that page.</h2>");
             return res.status(200).render('error.jade');
-            //res.redirect('/patients');
         }
 
         if(req.accepts('json')) {

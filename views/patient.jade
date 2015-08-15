@@ -6,7 +6,7 @@ block content
 
     if (patient)
         h1
-            | #{patient.name.last}, #{patient.name.first}
+            | #{patient.lastname}, #{patient.firstname}
         p
             | CNP: #{patient._id}
         br
@@ -57,7 +57,8 @@ block content
                             p
                                 input(type='submit', value='Submit data')
                                 input(type='hidden', name='patient_id', value='#{patient._id}')
-                            if (error)
-                                | #{error}
-                                for(singleError in error.errors)
-                                    | #{singleError}
+
+                            #errorBox
+                                p
+                                if (error)
+                                    | #{error}

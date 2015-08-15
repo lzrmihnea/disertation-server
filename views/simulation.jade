@@ -5,7 +5,7 @@ extends layout
 block content
    if (patient)
       h1
-         a(href='/patient/#{patient._id}') #{patient.name.last}, #{patient.name.first}
+         a(href='/patient/#{patient._id}') #{patient.lastname}, #{patient.firstname}
       p
          | CNP: #{patient._id}
       br
@@ -21,6 +21,8 @@ block content
                tr
                   td
                      | Elbow @contact: #{sim.elbowContactPos}
+                  td
+                     | &#09
                   td
                      | Elbow @release: #{sim.elbowReleasePos}
                tr

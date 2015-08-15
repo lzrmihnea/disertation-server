@@ -11,7 +11,6 @@ var Simulation = mongoose.model('Simulation');
 module.exports = function (app) {
 
     app.get("/patient/:id/sim/:simID",function(req,res,next){
-        console.log('aici o fost');
 
         var patientID = req.params.id;
         var simID = mongoose.Types.ObjectId(req.params.simID);
@@ -22,7 +21,6 @@ module.exports = function (app) {
             Simulation.findById(simID).exec(function(err,foundSimulation) {
                 if(err) return next(err);
                 if(!foundSimulation) {
-                    console.log('no sim found')
                 } //404
                 var simulation = foundSimulation;
                 return res.render('simulation.jade', {patient:patient,sim:simulation});
@@ -31,34 +29,35 @@ module.exports = function (app) {
     });
 
     app.post("/patient/:id/sim/:simID",function(req,res,next){
-        console.log('aici o fost');
 
-        var patientID = req.params.id;
         var simID = mongoose.Types.ObjectId(req.params.simID);
 
         Simulation.findById(simID).exec(function(err,foundSimulation) {
             if(err) return next(err);
             if(!foundSimulation) {
-                console.log('no sim found')
             } //404
 
             var simJSON = parseSimToJSON(foundSimulation);
-            console.log(simJSON);
-            //var jsonFilename = "/" + foundSimulation.patient_id + " - " + dateformat(foundSimulation.created, "dd.mm.yyyy, hh-MM-ss")+".txt";
             var fileExtension = ".m";
             var jsonFilename = foundSimulation.patient_id + " - " + dateformat(foundSimulation.created, "dd.mm.yyyy, hh-MM-ss")+fileExtension;
-            //fs.writeFile(jsonFilename, JSON.stringify(simJSON), function(err) {
-            //    if(err) return next(err);
-            //
-            //    console.log("The file was saved!");
-            //});
-            console.log(jsonFilename);
             var text={jsonFileContents:JSON.stringify(simJSON)};
-            console.log(text);
             res.set({"Content-Disposition":"attachment; filename=\""+jsonFilename+"\""});
             res.send(text.jsonFileContents);
         });
     });
+
+
+    app.get("/patient/:id/sim/:simID/delete",function(req,res,next){
+        var patientID = req.params.id;
+        var simID = mongoose.Types.ObjectId(req.params.simID);
+
+        Simulation.remove({"_id": simID});
+        Patient.update({"_id":patientID},{$pull:{simulations:{_id:{$eq:simID}}}}, function(err,result){
+            if(err) return next(err);
+        });
+        return res.redirect("/patient/"+req.params.id);
+    });
+
 
     function parseSimToJSON(simulation) {
         var simJSON = {
@@ -120,30 +119,5 @@ module.exports = function (app) {
     }
         return simJSON;
     }
-
-    app.get("/patient/:id/sim/:simID/delete",function(req,res,next){
-        var patientID = req.params.id;
-        var simID = mongoose.Types.ObjectId(req.params.simID);
-
-        Simulation.findById(simID, function(err,foundSimulation){
-            if(err) return next(err);
-
-            Patient.update(patientID,{$pull:{simulations:{_id:{$eq:simID}}}}, function(err,result){
-                if(err) return next(err);
-            });
-
-            if(foundSimulation){
-                foundSimulation.remove(function(err){
-                    if(err) return next(err);
-
-                    // TODO display a confirmation message to user
-                })
-            }
-        })
-        return res.redirect("/patient/"+req.params.id);
-    });
-
-
-
 
 }

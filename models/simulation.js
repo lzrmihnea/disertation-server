@@ -8,23 +8,23 @@ var schema = mongoose.Schema({
     shoulderPos: {type: String, required: true, match:/^(\-?\d+(\.\d+)?),\w*(\-?\d+(\.\d+)?)$/},
 
     elbowContactPos: {type: String, required: true, match:/^(\-?\d+(\.\d+)?),\w*(\-?\d+(\.\d+)?)$/},
-    handContactPos: {type: String},
+    handContactPos: {type: String, required: true, match:/^(\-?\d+(\.\d+)?),\w*(\-?\d+(\.\d+)?)$/},
 
-    elbowReleasePos: {type: String},
-    handReleasePos: {type: String},
+    elbowReleasePos: {type: String, required: true, match:/^(\-?\d+(\.\d+)?),\w*(\-?\d+(\.\d+)?)$/},
+    handReleasePos: {type: String, required: true, match:/^(\-?\d+(\.\d+)?),\w*(\-?\d+(\.\d+)?)$/},
 
-    upperArmMass: {type: String},
-    forearmMass: {type: String},
-    handMass: {type: String},
-    subjectMass: {type: String},
+    upperArmMass: {type: String, required:true, match:/^(\d+(\.\d+)?)$/},
+    forearmMass: {type: String, required:true, match:/^(\d+(\.\d+)?)$/},
+    handMass: {type: String, required:true, match:/^(\d+(\.\d+)?)$/},
+    subjectMass: {type: String, required:true, match:/^(\d+(\.\d+)?)$/},
 
     created: {type: Date, default: Date.now}
 
 });
 
-schema.statics.createSimFromReq = function (req, callback) {
+schema.statics.createSimFromReq = function (req, patientID, callback) {
     var currentSimulation = {
-        patient_id: req.body.patient_id,
+        patient_id: patientID,
 
         shoulderPos: req.body.shoulderPos,
 

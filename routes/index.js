@@ -1,9 +1,9 @@
+var Simulation = require('./../models/simulation.js');
+var Patient = require('./../models/patient.js');
 var errors = require('./errors');
 var patients = require('./patients');
 var simulations = require('./simulations');
 var mongoose = require('mongoose');
-var Simulation = require('./../models/simulation.js');
-var Patient = require('./../models/patient.js');
 mongoose.model('Simulation');
 mongoose.model('Patient');
 

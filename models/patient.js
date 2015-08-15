@@ -3,9 +3,12 @@ var Simulation = mongoose.model('Simulation');
 
 var schema = mongoose.Schema({
     _id: {
-        type:String
+        type:String,
+        required: true,
+        match:/^\d{13}$/
     },
-    name: {first:String, last:String},
+    lastname: {type:String, required: true, match:/^[A-Z][a-zA-Z]+$/},
+    firstname: {type:String, required: true, match:/^[A-Z][a-zA-Z]+$/},
     address: {type:String},
     created: {type:Date, default:Date.now},
     //simulations: [{type:Simulation}]
