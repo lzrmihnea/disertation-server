@@ -12,7 +12,7 @@ module.exports = function (app) {
 
   // home page
   app.get('/', function(req, res, next){
-      res.render('home.jade');
+      res.render('home.jade', {title: 'Dissertation server'});
   })
 
   patients(app);

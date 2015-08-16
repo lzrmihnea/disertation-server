@@ -2,8 +2,8 @@
  * Created by Mihnea on 7/8/2015.
  */
 var mongoose = require('mongoose');
-var fs = require('fs');
 var dateformat = require('dateformat');
+var json2csv = require('json2csv');
 
 var Patient = mongoose.model('Patient');
 var Simulation = mongoose.model('Simulation');
@@ -38,11 +38,18 @@ module.exports = function (app) {
             } //404
 
             var simJSON = parseSimToJSON(foundSimulation);
-            var fileExtension = ".m";
+            var fileExtension = ".csv";
             var jsonFilename = foundSimulation.patient_id + " - " + dateformat(foundSimulation.created, "dd.mm.yyyy, hh-MM-ss")+fileExtension;
-            var text={jsonFileContents:JSON.stringify(simJSON)};
-            res.set({"Content-Disposition":"attachment; filename=\""+jsonFilename+"\""});
-            res.send(text.jsonFileContents);
+            json2csv({data:simJSON,fields:simJSON.fields}, function(err, csv) {
+                if (err) console.log(err);
+                var text={jsonFileContents:csv};
+                console.log(csv);
+                res.set({"Content-Disposition":"attachment; filename=\""+jsonFilename+"\""});
+                res.send(text.jsonFileContents);
+            });
+            //var text={jsonFileContents:JSON.stringify(simJSON)};
+            //res.set({"Content-Disposition":"attachment; filename=\""+jsonFilename+"\""});
+            //res.send(text.jsonFileContents);
         });
     });
 

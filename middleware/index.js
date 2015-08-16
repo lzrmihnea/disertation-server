@@ -18,8 +18,9 @@ module.exports = function (app) {
         extended: true
     }));
     app.use(cookieParser());
-    app.use(session({secret: 'disertation server', saveUninitialized: true, resave: true}));
+    app.use(session({secret: 'dissertation server', saveUninitialized: true, resave: true}));
 
+    app.use(express.static(__dirname +'/../images'));
 
     //// Expose session to views
     //app.use(function (req, res, next) {

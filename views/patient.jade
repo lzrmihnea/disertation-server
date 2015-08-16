@@ -29,7 +29,7 @@ block content
                                         | &#09 &#149 &#09
                                         a(href='/patient/#{patient._id}/sim/#{simulation._id}/delete') X
                     td(style='vertical-align:top')
-                        form(method='post', action='/patient/#{patient._id}', enctype='application/x-www-form-urlencoded')
+                        form(method='post', action='/patient/#{patient._id}', enctype='application/x-www-form-urlencoded', autocomplete=off)
                             p
                                 input#shoulderPos(name='shoulderPos', placeholder='Shoulder position [x,y]', autocomplete=off)
                             p

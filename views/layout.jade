@@ -2,6 +2,7 @@ doctype html
 html
   head
     style
+        title #{title}
         include ../css/bootstrap.css
     title= title
   body
@@ -10,7 +11,7 @@ html
         ul
           span
             a(href='/')
-                img(id='img_logo_utcn', class='img', src="http://cv.utcluj.ro/smartcodrive/tl_files/SmartCoDrive/img/logo_utcn.gif")
+                img(id='img_logo_utcn', class='img', src="/logo_utcn.gif")
             | &#09 &#149 &#09
             a(href='/patients') Patients
     #section
