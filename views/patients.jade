@@ -30,13 +30,13 @@ block content
     form(method='post', action='/patients', enctype='application/x-www-form-urlencoded')
             p
             span
-                input(name='cnp', placeholder='CNP', style='width:150px')
+                input(name='cnp',class="form-control col-lg-6", placeholder='CNP', style='width:150px')
             span
-                input(name='lastname', placeholder='Last name', style='width:150px')
+                input(name='lastname',class="form-control col-lg-6", placeholder='Last name', style='width:150px')
             span
-                input(name='firstname', placeholder='First name', style='width:150px')
+                input(name='firstname',class="form-control col-lg-6", placeholder='First name', style='width:150px')
             span
-                input(type='submit', value='Add patient')
+                input(type='submit', class="btn btn-default", value='Add patient')
 
     #errorBox
         p
