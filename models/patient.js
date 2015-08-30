@@ -1,18 +1,19 @@
 var mongoose = require('mongoose');
 var Simulation = mongoose.model('Simulation');
 
+const REGEX_NAME = /^[A-Z][a-zA-Z]+$/;
+const REGEX_CNP = /^\d{13}$/;
+
 var schema = mongoose.Schema({
     _id: {
         type:String,
         required: true,
-        match:/^\d{13}$/
+        match: REGEX_CNP
     },
-    lastname: {type:String, required: true, match:/^[A-Z][a-zA-Z]+$/},
-    firstname: {type:String, required: true, match:/^[A-Z][a-zA-Z]+$/},
+    lastname: {type:String, required: true, match: REGEX_NAME},
+    firstname: {type:String, required: true, match:REGEX_NAME},
     address: {type:String},
     created: {type:Date, default:Date.now},
-    //simulations: [{type:Simulation}]
-    //simulations: [{sim :{type: mongoose.Schema.Types.ObjectId, ref: 'Simulation._id'}}]
     simulations: [{id: String, created:String}]
 });
 
