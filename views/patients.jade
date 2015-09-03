@@ -5,38 +5,39 @@ extends layout
 block content
 
     if (patients)
-        table
-            thead
-                tr
-                    td(style='width: 150px')
-                        b CNP
-                    td(style='width: 150px')
-                        b Lastname
-                    td(style='width: 150px')
-                        b Firstname
-            tbody
-                each patient in patients
-                    tr
-                        td(style='width: 150px')
-                           a(href='/patient/#{patient._id}') #{patient._id}
-                        td(style='width: 150px')
-                            | #{patient.lastname}
-                        td(style='width: 150px')
-                            | #{patient.firstname}
-                        td
-                            a(href='/patient/remove/#{patient._id}') X
-                    p
-
-    form(method='post', action='/patients', enctype='application/x-www-form-urlencoded')
-            p
-            span
-                input(name='cnp',class="form-control col-lg-6", placeholder='CNP', style='width:150px')
-            span
-                input(name='lastname',class="form-control col-lg-6", placeholder='Last name', style='width:150px')
-            span
-                input(name='firstname',class="form-control col-lg-6", placeholder='First name', style='width:150px')
-            span
-                input(type='submit', class="btn btn-default", value='Add patient')
+        .container
+            .row.col-md-6.col-md-offset-2.custyle
+                table(class="table table-striped custab")
+                    thead
+                        tr
+                            td(style='width: 150px')
+                                b CNP
+                            td(style='width: 150px')
+                                b Lastname
+                            td(style='width: 150px', colspan="2")
+                                b Firstname
+                    tbody
+                        each patient in patients
+                            tr
+                                td(style='width: 150px')
+                                   a(href='/patient/#{patient._id}') #{patient._id}
+                                td(style='width: 150px')
+                                    | #{patient.lastname}
+                                td(style='width: 150px')
+                                    | #{patient.firstname}
+                                td
+                                    a(href='/patient/remove/#{patient._id}', class='btn btn-danger btn-xs')
+                                        | X
+                        form(method='post', action='/patients', enctype='application/x-www-form-urlencoded')
+                            tr
+                                td
+                                    input(name='cnp',class="form-control col-lg-6", placeholder='CNP', style='width:150px')
+                                td
+                                    input(name='lastname',class="form-control col-lg-6", placeholder='Last name', style='width:150px')
+                                td
+                                    input(name='firstname',class="form-control col-lg-6", placeholder='First name', style='width:150px')
+                                td
+                                    input(type='submit', class="btn btn-default", value='Add patient')
 
     #errorBox
         p

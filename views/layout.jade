@@ -4,16 +4,24 @@ html
     style
         title #{title}
         include ../css/bootstrap.css
+        include ../css/myStyle.css
     title= title
   body
     #header
-    section.upperMenu
-        ul
-          span
-            a(href='/')
-                img(id='img_logo_utcn', class='img', src="/logo_utcn.gif")
-            | &#09 &#149 &#09
-            a(href='/patients') Patients
+        nav.navbar.navbar-default
+            div.container-fluid
+                ul.nav.navbar-nav
+                    li.navLi
+                        a(href='/').boldText
+                            img(id='img_logo_utcn', class='img', src="/logo_utcn.png")
+                    li.navLi
+                        a(href='/patients')
+                            p.navLiText.boldText
+                                | Patients
+                    li.navLi
+                        a(href='#')
+                            p.navLiText.boldText
+                                | About
     #section
         section.content
         block content
