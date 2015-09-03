@@ -1,22 +1,25 @@
 var mongoose = require('mongoose');
 
 // Optional: var schema = new mongoose.Schema({
+var REGEX_COORDINATES = /^(\-?\d+(\.\d+)?),\s?\w*(\-?\d+(\.\d+)?)$/;
+var REGEX_WEIGHT = /^(\d+(\.\d+)?)$/;
 var schema = mongoose.Schema({
 
     patient_id: {type: Number, index: 1},
 
-    shoulderPos: {type: String, required: true, match:/^(\-?\d+(\.\d+)?),\w*(\-?\d+(\.\d+)?)$/},
+    shoulderPos: {type: String, required: true, match: REGEX_COORDINATES},
 
-    elbowContactPos: {type: String, required: true, match:/^(\-?\d+(\.\d+)?),\w*(\-?\d+(\.\d+)?)$/},
-    handContactPos: {type: String, required: true, match:/^(\-?\d+(\.\d+)?),\w*(\-?\d+(\.\d+)?)$/},
+    
+    elbowContactPos: {type: String, required: true, match:REGEX_COORDINATES},
+    handContactPos: {type: String, required: true, match:REGEX_COORDINATES},
 
-    elbowReleasePos: {type: String, required: true, match:/^(\-?\d+(\.\d+)?),\w*(\-?\d+(\.\d+)?)$/},
-    handReleasePos: {type: String, required: true, match:/^(\-?\d+(\.\d+)?),\w*(\-?\d+(\.\d+)?)$/},
+    elbowReleasePos: {type: String, required: true, match:REGEX_COORDINATES},
+    handReleasePos: {type: String, required: true, match:REGEX_COORDINATES},
 
-    upperArmMass: {type: String, required:true, match:/^(\d+(\.\d+)?)$/},
-    forearmMass: {type: String, required:true, match:/^(\d+(\.\d+)?)$/},
-    handMass: {type: String, required:true, match:/^(\d+(\.\d+)?)$/},
-    subjectMass: {type: String, required:true, match:/^(\d+(\.\d+)?)$/},
+    upperArmMass: {type: String, required:true, match: REGEX_WEIGHT},
+    forearmMass: {type: String, required:true, match:REGEX_WEIGHT},
+    handMass: {type: String, required:true, match:REGEX_WEIGHT},
+    subjectMass: {type: String, required:true, match:REGEX_WEIGHT},
 
     created: {type: Date, default: Date.now}
 
